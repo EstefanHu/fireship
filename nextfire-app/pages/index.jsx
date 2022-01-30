@@ -1,10 +1,11 @@
+import toast from 'react-hot-toast';
 
-const EnterPage = () => {
+export default function Home() {
     return (
-        <main>
-            <h1>sign up</h1>
-        </main>
-    )
+        <div>
+            <button onClick={() => toast.success('hello toast!')}>
+                Toast Me
+            </button>
+        </div>
+    );
 }
-
-export default EnterPage;
