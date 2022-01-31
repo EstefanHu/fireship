@@ -1,16 +1,26 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { UserContext } from '../lib/context';
+import { auth } from '../lib/firebase';
 
 // Top navbar
 export default function Navbar() {
-    const user = null;
-    const username = null;
+    const { user, username } = useContext(UserContext);
+
+    const router = useRouter();
+
+    const signOut = () => {
+        auth.signOut();
+        router.reload();
+    }
 
     return (
         <nav className="navbar">
             <ul>
                 <li>
-                    <Link href="/" passHref>
-                        <button className="btn-logo">FEED</button>
+                    <Link href="/">
+                        <button className="btn-logo">NXT</button>
                     </Link>
                 </li>
 
@@ -18,13 +28,16 @@ export default function Navbar() {
                 {username && (
                     <>
                         <li className="push-left">
-                            <Link href="/admin" passHref>
+                            <button onClick={signOut}>Sign Out</button>
+                        </li>
+                        <li>
+                            <Link href="/admin">
                                 <button className="btn-blue">Write Posts</button>
                             </Link>
                         </li>
                         <li>
-                            <Link href={`/${username}`} passHref>
-                                <img src={user?.photoURL} alt='photo' />
+                            <Link href={`/${username}`}>
+                                <img src={user?.photoURL || '/hacker.png'} />
                             </Link>
                         </li>
                     </>
@@ -33,7 +46,7 @@ export default function Navbar() {
                 {/* user is not signed OR has not created username */}
                 {!username && (
                     <li>
-                        <Link href="/enter" passHref>
+                        <Link href="/enter">
                             <button className="btn-blue">Log in</button>
                         </Link>
                     </li>
